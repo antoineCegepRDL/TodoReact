@@ -1,0 +1,56 @@
+.message-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  position: relative;
+
+  .chat-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  .send-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+  .message {
+    background-color: #e0e0e0;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    clear: both;
+  }
+
+  .user-message {
+    float: right;
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .user-message::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  
+  .message-date {
+    align-self: flex-end;
+    font-size: 10px;
+    color: #666;
+    position: absolute;
+    top: -20px;
+    right: 10px;
+}
+
+
+
+}
