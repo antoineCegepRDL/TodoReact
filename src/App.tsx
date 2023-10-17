@@ -11,7 +11,7 @@ export default function App() {
   useEffect(() => {
     // Fetch messages here and then update the state with setMessages
     const getMessage = async () => {
-      const fetchedChatMessage: ChatMessage = await (await fetch('https://chat-server-cegeprdl-609ad4537875.herokuapp.com//message')).json()
+      const fetchedChatMessage: ChatMessage = await (await fetch('https://chat-server-cegeprdl-609ad4537875.herokuapp.com/message')).json()
       setMessages((currentChatMessages: ChatMessage[]) => {
         if (currentChatMessages[currentChatMessages.length - 1]?.message !== fetchedChatMessage.message) {
           return [...currentChatMessages, fetchedChatMessage]
@@ -23,7 +23,7 @@ export default function App() {
   }, []);
 
   const onSendMessage = async (message: string) => {
-    const response = await fetch('https://chat-server-cegeprdl-609ad4537875.herokuapp.com//message', {
+    const response = await fetch('https://chat-server-cegeprdl-609ad4537875.herokuapp.com/message', {
       body: JSON.stringify({ message, from: user }),
       method: "POST",
       headers: {
