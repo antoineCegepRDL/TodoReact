@@ -1,55 +1,59 @@
-import { useEffect, useState } from "react"
-import Message from "./Components/Message"
-import SendMessage from "./Components/SendMessage"
-import ChatMessage from "./types/ChatMessage"
-
-const user = "Antoine the super hacker 2000"
+import { useState, useEffect } from "react"
+import TodoItem from "./Components/TodoItem"
+import AddTodo from "./Components/AddTodo"
+import Todo from "./types/Todo"
+import {POST, DELETE, GET, PATCH } from "./composables/server"
 
 export default function App() {
-  const [chatMessages, setMessages] = useState<ChatMessage[]>([]);
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  const getTodos = async () => {
+    const res = await GET<Todo>("http://localhost:3001/todos")
+    setTodos(res)
+  }
 
   useEffect(() => {
-    // Fetch messages here and then update the state with setMessages
-    const getMessage = async () => {
-      const fetchedChatMessage: ChatMessage = await (await fetch('https://chat-server-cegeprdl-609ad4537875.herokuapp.com//message')).json()
-      setMessages((currentChatMessages: ChatMessage[]) => {
-        if (currentChatMessages[currentChatMessages.length - 1]?.message !== fetchedChatMessage.message) {
-          return [...currentChatMessages, fetchedChatMessage]
-        }
-        return currentChatMessages
-      })
+    async function fetchData() {
+      await getTodos();
     }
-    setInterval(getMessage, 1000);
+    fetchData();
   }, []);
 
-  const onSendMessage = async (message: string) => {
-    const response = await fetch('https://chat-server-cegeprdl-609ad4537875.herokuapp.com//message', {
-      body: JSON.stringify({ message, from: user }),
-      method: "POST",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-    })
-    if (response.ok) {
-      const chatMessage: ChatMessage = { date: new Date(), from: user, isUserMessage: true, message }
-      setMessages((currentChatMessages: ChatMessage[]) => {
-        return [...currentChatMessages, chatMessage]
-      })
+  const onAddTodo = async (text: string) => {
+    const todo: Todo = {text, isCompleted: false, date: new Date()} as any
+    const newTodo = await POST<Todo>("http://localhost:3001/todo", todo)
+    setTodos([...todos, newTodo])
+    
+  }
+
+  const onTodoCompleteClick = async (id: string) => {
+    const updatedTodos = [...todos]
+    const todo = updatedTodos.find(x => x.id === id)
+    if(todo) {
+      todo.isCompleted = !todo.isCompleted
+      setTodos(updatedTodos)
+      await PATCH<Todo>(`http://localhost:3001/todo/${id}`, todo)
     }
+    else {
+      alert ("erreur dans la mise à jour du todo")
+    }
+  }
+
+  const onTodoDeleteClick = async (id: string) => {
+    await DELETE(`http://localhost:3001/todo/${id}`)
+    const updatedTodos = [...todos].filter(x => x.id !== id)
+    setTodos(updatedTodos)
   }
 
   return (
     <div>
-      <h1>Les messages</h1>
-      <div className="chat-container">
-        {JSON.stringify(chatMessages)}
-        {chatMessages.map((message, index) => (
-          <Message chatMessage={message} key={index}/>
+      <h1>Liste des todos</h1>
+      <div className="todo-container">
+        {todos.map((todo) => (
+          <TodoItem todo={todo} onTodoCompleteClick={onTodoCompleteClick} onTodoDeleteClick={onTodoDeleteClick} key={todo.id}/>
         ))}
-        <SendMessage onSendMessage={onSendMessage}></SendMessage>
+        <AddTodo onAddTodo={onAddTodo}></AddTodo>
       </div>
     </div>
   )
 }
-

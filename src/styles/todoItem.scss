@@ -1,10 +1,10 @@
-.message-container {
+.todo-container {
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
   position: relative;
 
-  .chat-input {
+  .todo-input {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -20,37 +20,26 @@
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
-}
+  }
 
-  .message {
+  .todo {
     background-color: #e0e0e0;
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 10px;
     clear: both;
+    cursor: pointer;
+    .completed {
+      text-decoration: line-through;
+    }
   }
 
-  .user-message {
-    float: right;
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  .user-message::after {
-    content: "";
-    clear: both;
-    display: table;
-  }
-  
-  .message-date {
+  .todo-date {
     align-self: flex-end;
     font-size: 10px;
     color: #666;
     position: absolute;
     top: -20px;
     right: 10px;
-}
-
-
-
+  }
 }
