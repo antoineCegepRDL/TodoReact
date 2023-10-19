@@ -8,7 +8,7 @@ export default function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
 
   const getTodos = async () => {
-    const res = await GET<Todo>("http://localhost:3001/todos")
+    const res = await GET<Todo>("todos")
     setTodos(res)
   }
 
@@ -21,7 +21,7 @@ export default function App() {
 
   const onAddTodo = async (text: string) => {
     const todo: Todo = {text, isCompleted: false, date: new Date()} as any
-    const newTodo = await POST<Todo>("http://localhost:3001/todo", todo)
+    const newTodo = await POST<Todo>("todo", todo)
     setTodos([...todos, newTodo])
     
   }
@@ -32,7 +32,7 @@ export default function App() {
     if(todo) {
       todo.isCompleted = !todo.isCompleted
       setTodos(updatedTodos)
-      await PATCH<Todo>(`http://localhost:3001/todo/${id}`, todo)
+      await PATCH<Todo>(`todo/${id}`, todo)
     }
     else {
       alert ("erreur dans la mise à jour du todo")
@@ -40,7 +40,7 @@ export default function App() {
   }
 
   const onTodoDeleteClick = async (id: string) => {
-    await DELETE(`http://localhost:3001/todo/${id}`)
+    await DELETE(`todo/${id}`)
     const updatedTodos = [...todos].filter(x => x.id !== id)
     setTodos(updatedTodos)
   }
