@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
-import TodoItem from "./Components/TodoItem"
-import AddTodo from "./Components/AddTodo"
+import TodoItemComponent from "./Components/Todo"
+import AddTodoComponent from "./Components/AddTodo"
 import Todo from "./types/Todo"
 import {POST, DELETE, GET, PATCH } from "./composables/server"
 
@@ -50,9 +50,9 @@ export default function App() {
       <h1>Liste des todos</h1>
       <div className="todo-container">
         {todos.map((todo) => (
-          <TodoItem todo={todo} onTodoCompleteClick={onTodoCompleteClick} onTodoDeleteClick={onTodoDeleteClick} key={todo.id}/>
+          <TodoItemComponent todo={todo} onTodoCompleteClick={onTodoCompleteClick} onTodoDeleteClick={onTodoDeleteClick} key={todo.id}/>
         ))}
-        <AddTodo onAddTodo={onAddTodo}></AddTodo>
+        <AddTodoComponent onAddTodo={onAddTodo}></AddTodoComponent>
       </div>
     </div>
   )
